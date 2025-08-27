@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartão Giratório - Demonstração</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      hyphens: auto;
+      word-wrap: break-word;
+      box-sizing: border-box;
+    }
+    
+    body {
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background-color: #fefefe;
+      background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+      padding: 3rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .header {
+      margin-bottom: 3rem;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      color: #4a4a4a;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 1s ease-out 0.3s forwards;
+    }
+    
+    .cartao-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+    
+    .cartao-section {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    
+    .cartao-section:nth-child(1) {
+      animation-delay: 0.2s;
+    }
+    
+    .cartao-section:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+    
+    .cartao-section:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+    
+    .cartao-section:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0.75rem;
+    }
+    
+    .cartao-section p {
+      font-size: 1rem;
+      color: #5a5a5a;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    
+    code {
+      background: #f1f3f5;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: "Fira Code", monospace;
+      color: #d63031;
+    }
+    
+    cartao-giratorio {
+      --cartao-largura: 300px;
+      --cartao-altura: 200px;
+      --cartao-raio-borda: 0.75rem;
+      --cartao-sombra: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a1a1a;
+        background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+      }
+      
+      .header h1 {
+        color: #f5f5f5;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .header p {
+        color: #bdc3c7;
+      }
+      
+      .cartao-section {
+        background: rgba(34, 34, 34, 0.85);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      }
+      
+      .cartao-section h2 {
+        color: #ecf0f1;
+      }
+      
+      .cartao-section p {
+        color: #b0b0b0;
+      }
+      
+      code {
+        background: #2d3436;
+        color: #ff7675;
+      }
+      
+      cartao-giratorio {
+        --cartao-sombra: 0 6px 12px rgba(0, 0, 0, 0.5);
+      }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .cartao-section {
+        transition: none;
+        animation: none;
+        opacity: 1;
+      }
+      
+      .header p {
+        animation: none;
+        opacity: 1;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .cartao-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .header h1 {
+        font-size: 2.25rem;
+      }
+      
+      .header p {
+        font-size: 1rem;
+      }
+      
+      .cartao-section {
+        padding: 1.5rem;
+      }
+      
+      .cartao-section h2 {
+        font-size: 1.5rem;
+      }
+      
+      .cartao-section p {
+        font-size: 0.9rem;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Cartão Giratório</h1>
+      <p>
+        Explore a rotação interativa deste Web Component acessível e
+        personalizável, projetado para oferecer uma experiência visual
+        elegante e funcional.
+      </p>
+    </header>
+    
+    <div class="cartao-grid">
+      <!-- Uso 1: Sem imagens, apenas com a tag -->
+      <section class="cartao-section">
+        <h2>Cartão Simples</h2>
+        <p>
+          Este cartão utiliza apenas a tag
+          <code>&lt;cartao-giratorio&gt;</code>, sem imagens, exibindo cores
+          padrão. Possui todas as funcionalidades de acessibilidade, incluindo
+          navegação por teclado, suporte a leitores de tela e indicação de
+          interatividade. Trata-se de um exemplo do que é exibido quando
+          imagens não são utilizadas.
+        </p>
+        <cartao-giratorio></cartao-giratorio>
+      </section>
+      
+      <!-- Uso 2: Com acessibilidade -->
+      <section class="cartao-section">
+        <h2>Cartão com Acessibilidade</h2>
+        <p>
+          Este cartão incorpora imagens personalizadas e preserva todas as
+          funcionalidades de acessibilidade, incluindo navegação por teclado,
+          atributos ARIA, anúncios para leitores de tela e uma indicação
+          visível de interatividade, semelhante ao exemplo anterior.
+        </p>
+        <cartao-giratorio front-image="img/cartaodev.png" back-image="img/deverso.png" style="--cartao-cor-frente: #0f1116; --cartao-cor-verso: #0f1116;" front-label="Um arquivo JSON &quot;cartão-de-visita.json&quot; aberto em um editor de código, contendo as propriedades: &quot;name&quot;: &quot;@dericksousa&quot;, &quot;title&quot;: &quot;desenvolvedor web&quot;, &quot;github&quot;: &quot;github.com/ecstasyvies&quot; e &quot;site&quot;: &quot;dericksousa.nekoweb.org&quot;, estruturadas entre chaves." back-label="Letra &quot;D&quot; estilizada em azul claro, com traço interno curvo tipo chama e ponto à direita, sobre fundo cinza-azulado em degradê com linhas diagonais azuis."></cartao-giratorio>
+      </section>
+      
+      <!-- Uso 3: Decorativo, com interatividade visual e por teclado -->
+      <section class="cartao-section">
+        <h2>Cartão Decorativo</h2>
+        <p>
+          Este cartão utiliza o atributo <code>decorative</code> para atuar
+          como um elemento visual, sem semântica para leitores de tela.
+          Preserva a indicação de interatividade e os controles por teclado
+          para usuários que enxergam, além de oferecer interação por
+          mouse/toque e rotação automática.
+        </p>
+        <cartao-giratorio decorative front-image="img/frente.png" back-image="img/verso.png" style="--cartao-cor-frente: #ef9425;">
+        </cartao-giratorio>
+      </section>
+    </div>
+  </div>
+  <script src="cartao-giratorio.js"></script>
+</body>
+
+</html>
